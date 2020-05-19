@@ -2,6 +2,7 @@ package filemodels;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.util.Collection;
 
@@ -13,6 +14,7 @@ import com.drew.metadata.Tag;
 
 public class ImgFile implements Serializable {
     private static final long serialVersionUID = 1L;
+    private static String processedFileList = "/home/npriyanshu/Desktop/processed_class.txt";
     File file;
     Metadata metadata;
 
@@ -21,7 +23,7 @@ public class ImgFile implements Serializable {
         try {
             this.metadata = ImageMetadataReader.readMetadata(file);
         } catch (ImageProcessingException | IOException e) {
-            // add log here
+            writeLogFiles(processedFileList, this.file.getName());
         }
     }
 
@@ -73,5 +75,14 @@ public class ImgFile implements Serializable {
             }
         }
         return true;
+    }
+
+    public static void writeLogFiles(String fileName, String message) {
+        try (RandomAccessFile file = new RandomAccessFile(new File(fileName), "rw")) {
+            file.seek(file.length());
+            file.writeBytes(message + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
