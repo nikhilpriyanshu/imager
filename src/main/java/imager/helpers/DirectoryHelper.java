@@ -1,4 +1,4 @@
-package helpers;
+package imager.helpers;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DirectoryHelper {
     private static List<String> filteredFileExtensions = new ArrayList<String>(
-            Arrays.asList(".ini", ".db", ".pdf", ".docx", ".java", ".xlsx", ".zip", ".nomedia", ".exe"));
+            Arrays.asList(".ini", ".db", ".pdf", ".docx", ".java", ".xlsx", ".zip", ".nomedia", ".exe", ".mp4"));
 
     public static List<File> getFileList(File directoryPath) {
         if (!directoryPath.exists()) {
