@@ -1,4 +1,4 @@
-package handlers;
+package helpers;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DirectoryHandler {
+public class DirectoryHelper {
     private static List<String> filteredFileExtensions = new ArrayList<String>(
             Arrays.asList(".ini", ".db", ".pdf", ".docx", ".java", ".xlsx", ".zip", ".nomedia", ".exe"));
 
