@@ -1,4 +1,4 @@
-package helpers;
+package imager.helpers;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -127,7 +127,7 @@ public class PropertyHelper {
             key = line.substring(0, line.indexOf(": "));
         } else {
             line.strip();
-            key = line.substring(0, line.length());
+            key = line.substring(0, line.length() - 1);
         }
         return key;
     }
@@ -138,6 +138,9 @@ public class PropertyHelper {
             line.strip();
             value = line.substring(line.indexOf(": ") + 2, line.length());
         }
+        value = value.replace("\"","\\\"");
+        value = value.replace("{","\\\\{");
+        value = value.replace("}","\\\\}");
         return value;
     }
 
@@ -168,6 +171,7 @@ public class PropertyHelper {
         List<String> command = new ArrayList<String>();
         command.add("identify");
         command.add("-verbose");
+        command.add("-quiet");
         command.addAll(files);
         return command.toArray(String[]::new);
     }
