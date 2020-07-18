@@ -1,56 +1,24 @@
 package imager.main;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
-import com.drew.imaging.ImageMetadataReader;
-import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Metadata;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import filemodels.ImgFile;
-import handlers.DirectoryHandler;
+import helpers.PropertyHelper;
 
 public class ImagerMain {
-    private static File directoryFile = new File("/home/npriyanshu/Images(DoNotChange)/");
-    private static String processedFileList = "/home/npriyanshu/Desktop/processed.txt";
-    private static String unProcessedFileList = "/home/npriyanshu/Desktop/unprocessed.txt";
-    private static List<ImgFile> imgFiles = new ArrayList<ImgFile>();
+    private static List<String> files = new ArrayList<String>();
 
     public static void main(String args[]) {
-        List<File> files = DirectoryHandler.getFileList(directoryFile);
-        ListIterator<File> itr = files.listIterator();
-        while (itr.hasNext()) {
-            File file = itr.next();
-            if (file.isDirectory()) {
-                continue;
-            }
-            if (file.getName().contains("._IMG_") || file.getName().contains("IMG_8887.JPG")
-                    || file.getName().contains("VVNS0800.MP4") || file.getName().contains("UFAT4521.MP4")
-                    || file.getName().contains(".3gp") || file.getName().contains(".AAE")
-                    || (file.getName().contains("VID-") && file.getName().contains("-WA"))
-                    || (file.getName().contains("IMG-") && file.getName().contains("-WA"))) {
-                continue;
-            }
-            try {
-                ImageMetadataReader.readMetadata(file);
-                imgFiles.add(new ImgFile(file));
-                writeLogFiles(processedFileList, file.getAbsolutePath());
-            } catch (ImageProcessingException | IOException e) {
-                writeLogFiles(unProcessedFileList, file.getAbsolutePath());
-            }
-        }
-    }
-
-    public static void writeLogFiles(String fileName, String message) {
-        try (RandomAccessFile file = new RandomAccessFile(new File(fileName), "rw")) {
-            file.seek(file.length());
-            file.writeBytes(message + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+        files.add("/home/npriyanshu/Desktop/Images/20190420_052845.jpg");
+        files.add("/home/npriyanshu/Desktop/Images/20200407_184756.jpg");
+        files.add("/home/npriyanshu/Desktop/Images/20200414_211138.jpg");
+        JSONArray jsonArray = PropertyHelper.readFileProperties(files);
+        for (Object object : jsonArray) {
+            JSONObject jsonObject = (JSONObject) object;
+            System.out.println(jsonObject.toJSONString());
         }
     }
 }
