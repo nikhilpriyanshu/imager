@@ -1,6 +1,7 @@
 package imager.main;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -21,9 +22,12 @@ public class ImagerMain {
         //Fetch list of image files from the directoryPath
         File dirFile = new File(directoryPath);
         List<File> fileList = DirectoryHelper.getFileList(dirFile);
+        List<File> matchedFileList = new ArrayList<File>();
+        List<File> unmatchedFileList = new ArrayList<File>();
+        DirectoryHelper.filterFiles(fileList, matchedFileList, unmatchedFileList);
 
         //Read file properties in JSON object and add files with properties to imagerDB
-        FileBatchHandler fileBatchHandler = new FileBatchHandler(fileList, BATCH_SIZE);
+        FileBatchHandler fileBatchHandler = new FileBatchHandler(matchedFileList, BATCH_SIZE);
         while (fileBatchHandler.isNextBatchAvailable()) {
             List<String> files = fileBatchHandler.getNextFileNameBatch();
             JSONArray jsonArray = PropertyHelper.readFileProperties(files);
@@ -36,5 +40,6 @@ public class ImagerMain {
         }
 
         //image processing
+        
     }
 }

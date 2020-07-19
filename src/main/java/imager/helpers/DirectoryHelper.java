@@ -20,16 +20,28 @@ public class DirectoryHelper {
             if (file.isDirectory()) {
                 files.addAll(getFileList(file));
             } else {
-                String fileName = file.getName();
-                String extension = null;
-                if(fileName.contains(".")) {
-                    extension = fileName.substring(fileName.lastIndexOf('.'));
-                }
-                if (extension != null && !filteredFileExtensions.contains(extension)) {
-                    files.add(file);
-                }
+                files.add(file);
             }
         }
         return files;
+    }
+
+    public static void filterFiles(List<File> files, List<File> matchedFiles, List<File> unmatchedFiles) {
+        for (File file : files) {
+            String fileName = file.getName();
+            String extension = null;
+            if(fileName.contains(".")) {
+                extension = fileName.substring(fileName.lastIndexOf('.'));
+            }
+            if (extension != null && !filteredFileExtensions.contains(extension)) {
+                if (matchedFiles != null) {
+                    matchedFiles.add(file);
+                }
+            } else {
+                if (unmatchedFiles != null) {
+                    unmatchedFiles.add(file);
+                }
+            }
+        }
     }
 }
